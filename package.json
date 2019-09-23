@@ -1,0 +1,19 @@
+{
+  "name": "runlocked",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "proper-lockfile": ""
+  },
+  "devDependencies": {
+    "express": "",
+    "mocha": "",
+    "chai": ""
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC"
+}
