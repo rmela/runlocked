@@ -1,4 +1,4 @@
-Work in progress
+A lightweight wrapper around `proper-lockfile` to simplify wrapping a user function inside a file lock.
 
 Intended usage:
 
