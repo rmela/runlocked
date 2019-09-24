@@ -29,6 +29,10 @@ function throwfunc() {
     throw new Error( ERROR_MESSAGE )
 }
 
+function syntaxError() {
+    return x * y;
+}
+
 describe( "Lock", function() {
 
    it( "basic acquire", function(done)  {
@@ -58,6 +62,17 @@ describe( "Lock", function() {
           })
           .catch( done )
 
+   })
+
+   it( 'should return syntax error exceptions', function(done) {
+       let lock = new Lock( LOCKDIR, LOCKFILE )
+       lock.runlocked( syntaxError )
+           .then( () => assert.fail( "user code with syntax errors should not resolve to a value" ) )
+           .catch( function(err) {
+               assert.equal( err.message,  'x is not defined', 'Syntax error in user coulde should be returned' )
+               done()
+           })
+           .catch( done )
    })
 
    it( 'should capture simple function output', function(done) {
