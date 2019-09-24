@@ -1,7 +1,8 @@
 const assert = require("chai").assert
+const fs = require('fs')
 const Lock = require('../index').Lock
 
-const LOCKDIR  = '.'
+const LOCKDIR  = 'lockdir'
 const LOCKFILE = 'myfile'
 
 
@@ -9,7 +10,23 @@ function sleep( msecs ) {
     return new Promise( resolve => setTimeout( () => resolve(msecs) , msecs ) )
 }
 
+
+
+function mkdir(done) {
+   fs.mkdirSync(LOCKDIR);
+   done();
+}
+
+function rmdir(done) {
+   sleep(500).then( () => {
+       fs.rmdirSync(LOCKDIR);
+       done()
+   })
+}
 describe( "Lock", function() {
+
+   beforeEach( mkdir )
+   afterEach( rmdir )
 
    it( "it should prevent simultaneous operations within single process ", function(done)  {
 
@@ -21,8 +38,8 @@ describe( "Lock", function() {
 
       Promise.all( 
           [
-             lock.runlocked( () => sleep( 1000 ) )
-                 .then( result => assert.equal( result, 1000 ), 'The first promise to start should have succeeded'  ),
+             lock.runlocked( () => sleep( 500 ) )
+                 .then( result => assert.equal( result, 500 ), 'The first promise to start should have succeeded'  ),
 
              lock.runlocked( () => ran = true )
                 .catch( err => {
